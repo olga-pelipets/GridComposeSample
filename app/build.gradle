@@ -1,0 +1,85 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id("com.google.dagger.hilt.android")
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+android {
+    packagingOptions{
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+    }
+    kotlinOptions{
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
+    }
+    compileSdk 32
+    buildFeatures{
+        viewBinding true
+        dataBinding true
+    }
+    defaultConfig {
+        applicationId "com.grid.compose.example"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$androidx_core"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.ext:junit:$junit_test"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    implementation project(path: ':storage-domain')
+    implementation project(path: ':storage-data')
+    implementation project(path: ':weather-domain')
+    implementation project(path: ':weather-data')
+    implementation project(path: ':city-domain')
+    implementation project(path: ':city-data')
+    implementation project(path: ':info-ui')
+    implementation project(path: ':settings-ui')
+    implementation project(path: ':main-ui')
+    implementation project(path: ':location-ui')
+    implementation project(path: ':base')
+
+    //Asserts - truth
+    androidTestImplementation "com.google.truth:truth:1.0.1"
+    testImplementation "com.google.truth:truth:1.0.1"
+    //MockK
+    testImplementation "io.mockk:mockk-android:1.13.2"
+    androidTestImplementation "io.mockk:mockk-android:1.13.2"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+}

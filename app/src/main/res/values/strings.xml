@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Compose Sample</string>
+    <string name="bin">Bin</string>
+    <string name="use_your_location">USE YOUR LOCATION</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="wind">Wind speed</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="confirm">Confirm changes</string>
+    <string name="celsius">°C</string>
+    <string name="kelvin">K</string>
+    <string name="map">Use map</string>
+</resources>
