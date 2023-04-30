@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.base.Result
+import com.example.base.UiEvents
 import com.example.weather_domain.models.ForecastWeather
 import com.example.weather_domain.repo.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,11 +23,18 @@ class AdditionalInfoScreenViewModel @Inject constructor(
     val forecast = MutableLiveData<ForecastWeather?>()
     var dayValue = MutableLiveData<String>()
 
+    private val uiEvents = UiEvents<Event>()
+    val events: Flow<Event> = uiEvents.events()
+
+    fun sendEvent(event: Event){
+        uiEvents.post(event)
+    }
+
     init {
         fetchData()
     }
 
-    fun fetchData() {
+    private fun fetchData() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val result = weatherRepository.getForecastWeather()
@@ -37,5 +46,9 @@ class AdditionalInfoScreenViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    sealed class Event {
+        object OnBackPressed : Event()
     }
 }

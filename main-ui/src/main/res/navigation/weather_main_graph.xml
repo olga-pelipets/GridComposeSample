@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weather_main_graph"
+    app:startDestination="@id/main_screen_id">
+
+    <fragment
+        android:id="@id/main_screen_id"
+        android:name="com.example.main_ui.MainScreenFragment"
+        android:label="Weather in your Location"
+        tools:layout="@layout/fragment_main_screen">
+
+        <action
+            android:id="@+id/navigateToViewPager"
+            app:destination="@id/info_graph">
+            <argument
+                android:name="day"
+                app:argType="string" />
+            <argument
+                android:name="days"
+                app:argType="string[]" />
+        </action>
+    </fragment>
+
+    <include app:graph="@navigation/info_graph" />
+
+</navigation>

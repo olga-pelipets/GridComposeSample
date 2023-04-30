@@ -1,0 +1,6 @@
+<resources>
+    <string name="summary_sample_app">MVVM sample app</string>
+    <string name="summary_typography">Typography</string>
+    <string name="summary_buttons">Buttons</string>
+    <string name="summary_item_text2">Text2</string>
+</resources>

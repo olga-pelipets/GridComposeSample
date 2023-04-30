@@ -7,14 +7,12 @@ plugins {
 }
 
 android {
+    namespace 'com.example.info.ui'
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        minSdk 28
         targetSdk 32
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
     buildFeatures{
         viewBinding true
@@ -49,6 +47,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
     implementation project(path: ':weather-domain')
     implementation project(path: ':base')
+    implementation project(path: ':components')
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"

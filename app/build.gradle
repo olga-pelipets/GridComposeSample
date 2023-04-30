@@ -25,7 +25,7 @@ android {
     }
     defaultConfig {
         applicationId "com.grid.compose.example"
-        minSdk 21
+        minSdk 28
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -64,12 +64,10 @@ dependencies {
     implementation project(path: ':storage-data')
     implementation project(path: ':weather-domain')
     implementation project(path: ':weather-data')
-    implementation project(path: ':city-domain')
-    implementation project(path: ':city-data')
     implementation project(path: ':info-ui')
-    implementation project(path: ':settings-ui')
     implementation project(path: ':main-ui')
-    implementation project(path: ':location-ui')
+    implementation project(path: ':common-ui')
+    implementation project(path: ':components')
     implementation project(path: ':base')
 
     //Asserts - truth
@@ -82,4 +80,7 @@ dependencies {
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
 }

@@ -37,12 +37,8 @@ Compose Grid Sample Start
 #
 # Untracked files:
 #	base/
-#	city-data/
-#	city-domain/
 #	info-ui/
-#	location-ui/
 #	main-ui/
-#	settings-ui/
 #	storage-data/
 #	storage-domain/
 #	weather-data/

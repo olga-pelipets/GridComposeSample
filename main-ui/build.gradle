@@ -7,14 +7,12 @@ plugins {
 }
 
 android {
+    namespace 'com.example.main.ui'
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        minSdk 28
         targetSdk 32
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
     buildFeatures{
         viewBinding true
@@ -54,8 +52,7 @@ dependencies {
     implementation project(path: ':storage-domain')
     implementation project(path: ':weather-domain')
     implementation project(path: ':base')
-    implementation project(path: ':settings-ui')
-    implementation project(path: ':location-ui')
+    implementation project(path: ':components')
     implementation project(path: ':info-ui')
 
     //Coroutines

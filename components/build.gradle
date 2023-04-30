@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.example.components'
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 28
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildFeatures{
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$androidx_core"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "com.google.android.material:material:$material"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.ext:junit:$junit_test"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+    //Compose
+    implementation "androidx.compose.ui:ui:$compose"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose"
+    api "androidx.compose.material:material:$compose_material"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose"
+    implementation "androidx.compose.material:material-icons-extended:$compose"
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha13'
+    implementation "androidx.compose.runtime:runtime-livedata:$compose"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+}

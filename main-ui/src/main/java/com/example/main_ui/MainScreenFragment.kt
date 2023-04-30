@@ -13,29 +13,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
-import com.example.base.ui.theme.AppTheme
-import com.example.main_ui.ui.MainScreen
-import com.example.weather_domain.models.ForecastWeather
-import com.example.weather_domain.models.LocationMethod
+import com.example.base.fragments.BaseFragment
+import com.example.components.theme.GridTheme
+import com.example.main_ui.ui.MainWeatherScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
 
 @AndroidEntryPoint
-class MainScreenFragment : Fragment(), LifecycleObserver, DefaultLifecycleObserver {
+class MainScreenFragment : BaseFragment() {
     private val viewModel by viewModels<MainScreenViewModel>()
-    lateinit var forecast: ForecastWeather
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreateView(
@@ -44,20 +39,20 @@ class MainScreenFragment : Fragment(), LifecycleObserver, DefaultLifecycleObserv
         savedInstanceState: Bundle?
     ): View? {
         lifecycle.addObserver(viewModel)
+        startCoroutineScope()
+        uiScope.launch {
+            viewModel.events.collect { handleEvent(it) }
+        }
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
-        if (viewModel.storageRepository.getLocationMethod() == LocationMethod.Location) {
-            checkPermission()
-        } else if (viewModel.storageRepository.getLocationMethod() == LocationMethod.City) {
-            viewModel.photoVisibility.value = viewModel.storageRepository.getPhotoId().isNotEmpty()
-        }
+        checkPermission()
 
         return ComposeView(requireContext()).apply {
             setContent {
-                AppTheme {
-                    Surface(color = MaterialTheme.colorScheme.background) {
-                        MainScreen(viewModel, navController = findNavController())
+                GridTheme {
+                    Surface {
+                        MainWeatherScreen(viewModel)
                     }
                 }
             }
@@ -71,7 +66,6 @@ class MainScreenFragment : Fragment(), LifecycleObserver, DefaultLifecycleObserv
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {
-            // Checking whether user granted the permission or not.
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.checkSelfPermission(
                         requireContext(),
@@ -96,7 +90,6 @@ class MainScreenFragment : Fragment(), LifecycleObserver, DefaultLifecycleObserv
             setPositiveButton(
                 "ok"
             ) { _, _ ->
-                findNavController().navigate(MainScreenFragmentDirections.navigateToCities())
             }
         }
             .create()
@@ -107,14 +100,14 @@ class MainScreenFragment : Fragment(), LifecycleObserver, DefaultLifecycleObserv
     private fun getLocation() {
         fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
             try {
-                val location: Location = task.result
+                 val location: Location = task.result
                 val geocoder = Geocoder(requireActivity(), Locale.getDefault())
                 val addresses: List<Address> = geocoder.getFromLocation(
                     location.latitude, location.longitude, 1
                 )
                 viewModel.storageRepository.saveCoordinates(
-                    addresses[0].latitude,
-                    addresses[0].longitude
+                    addresses.firstOrNull()?.latitude,
+                    addresses.firstOrNull()?.longitude
                 )
                 viewModel.fetchData()
             } catch (e: IOException) {
@@ -147,6 +140,22 @@ class MainScreenFragment : Fragment(), LifecycleObserver, DefaultLifecycleObserv
         } else {
             checkGPS()
         }
+    }
+
+    private fun handleEvent(event: MainScreenViewModel.Event) {
+        when (event) {
+            is MainScreenViewModel.Event.InfoDetails -> navigateToDetailsInfo(event.day, event.days)
+        }
+    }
+
+
+    private fun navigateToDetailsInfo(day: String, days: List<String>){
+        findNavController().navigate(
+            MainScreenFragmentDirections.navigateToViewPager(
+                day,
+                days.toTypedArray()
+            )
+        )
     }
 
     companion object {

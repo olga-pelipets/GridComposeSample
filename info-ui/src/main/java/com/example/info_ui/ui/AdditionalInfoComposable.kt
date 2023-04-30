@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,11 +34,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.FragmentActivity
 import coil.compose.rememberAsyncImagePainter
+import com.example.info.ui.R
 import com.example.info_ui.AdditionalInfoScreenFragmentArgs
 import com.example.info_ui.AdditionalInfoScreenViewModel
-import com.example.info_ui.R
 import com.example.weather_domain.models.ForecastItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -53,37 +51,19 @@ import java.math.RoundingMode
 @Composable
 fun ContentView(
     viewModel: AdditionalInfoScreenViewModel,
-    days: Array<String>,
-    activity: FragmentActivity?,
     args: AdditionalInfoScreenFragmentArgs
 ) {
+    val days = args.days
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
 
-    Column(modifier = Modifier.fillMaxSize()) {
-
-        Button(
-            onClick = {
-                activity?.onBackPressed()
-            },
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(top = 8.dp, start = 8.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_back_button),
-                contentDescription = null,
-            )
-        }
-
-        PagerContent(
-            viewModel = viewModel,
-            pagerState = pagerState,
-            days = days,
-            scope = coroutineScope,
-            args = args
-        )
-    }
+    PagerContent(
+        viewModel = viewModel,
+        pagerState = pagerState,
+        days = days,
+        scope = coroutineScope,
+        args = args
+    )
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -107,14 +87,7 @@ fun PagerContent(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            when (page) {
-                0 -> InfoScreen(viewModel, days[0])
-                1 -> InfoScreen(viewModel, days[1])
-                2 -> InfoScreen(viewModel, days[2])
-                3 -> InfoScreen(viewModel, days[3])
-                4 -> InfoScreen(viewModel, days[4])
-                5 -> InfoScreen(viewModel, days[5])
-            }
+            days.getOrNull(page)?.let { InfoScreen(viewModel = viewModel, day = it) }
             scope.launch {
                 if (!isPageScrolled) {
                     pagerState.scrollToPage(index)

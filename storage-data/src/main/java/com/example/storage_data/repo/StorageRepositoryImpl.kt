@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.storage_domain.repo.StorageRepository
 import com.example.weather_domain.models.Language
-import com.example.weather_domain.models.LocationMethod
 import com.example.weather_domain.models.Units
 import javax.inject.Inject
 
 private const val EXTRA_CITY = "extra_city"
-private const val EXTRA_LOCATION_METHOD = "location_method"
 private const val EXTRA_UNITS = "units"
 private const val EXTRA_LAT = "lat"
 private const val EXTRA_LON = "lon"
@@ -21,25 +19,8 @@ class StorageRepositoryImpl @Inject constructor(context: Context) :
     private val prefs: SharedPreferences =
         context.getSharedPreferences("weather_prefs", Context.MODE_PRIVATE)
 
-    override fun saveCity(city: String?) {
-        city?.takeIf { it.isNotEmpty() }
-            ?.let {
-                prefs.edit().putString(EXTRA_CITY, it).apply()
-            }
-    }
-
     override fun getCity(): String {
         return prefs.getString(EXTRA_CITY, "")?.takeIf { it.isNotEmpty() }.toString()
-    }
-
-    override fun saveLocationMethod(method: LocationMethod) {
-        prefs.edit().putString(EXTRA_LOCATION_METHOD, method.toString()).apply()
-    }
-
-    override fun getLocationMethod(): LocationMethod {
-        val method =
-            prefs.getString(EXTRA_LOCATION_METHOD, LocationMethod.Location.toString()).orEmpty()
-        return LocationMethod.valueOf(method)
     }
 
     override fun saveUnits(units: Units) {
@@ -50,7 +31,8 @@ class StorageRepositoryImpl @Inject constructor(context: Context) :
         return prefs.getString(EXTRA_UNITS, "").orEmpty().toUnits()
     }
 
-    override fun saveCoordinates(lat: Double, lon: Double) {
+    override fun saveCoordinates(lat: Double?, lon: Double?) {
+        if (lat == null || lon == null) return
         prefs.edit().putFloat(EXTRA_LAT, lat.toFloat()).apply()
         prefs.edit().putFloat(EXTRA_LON, lon.toFloat()).apply()
     }

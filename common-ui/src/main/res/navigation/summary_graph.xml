@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/main_screen_id">
+
+    <fragment
+        android:id="@id/main_screen_id"
+        android:name="com.example.common_ui.summary.SummaryFragment"
+        android:label="Summary screen">
+
+        <action
+            android:id="@+id/navigateToWeatherApp"
+            app:destination="@id/weather_main_graph">
+        </action>
+
+        <action
+            android:id="@+id/navigateToButtonsScreen"
+            app:destination="@id/buttons_screen_id"/>
+
+        <action
+            android:id="@+id/navigateToTypographyScreen"
+            app:destination="@id/typography_screen_id"/>
+    </fragment>
+
+    <fragment
+        android:id="@id/buttons_screen_id"
+        android:name="com.example.common_ui.buttons.ButtonsFragment"
+        android:label="Buttons screen">
+    </fragment>
+
+    <fragment
+        android:id="@id/typography_screen_id"
+        android:name="com.example.common_ui.typography.TypographyFragment"
+        android:label="Typography screen">
+    </fragment>
+
+    <include app:graph="@navigation/weather_main_graph" />
+
+</navigation>

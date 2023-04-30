@@ -5,21 +5,9 @@
     android:id="@+id/info_graph"
     app:startDestination="@id/additionalInfoScreenFragment">
     <fragment
-        android:id="@+id/forecastDetailsFragment"
-        android:name="com.example.info_ui.ForecastDetailsFragment"
-        android:label="ForecastDetailsFragment">
-        <argument
-            android:name="day"
-            app:argType="string" />
-        <argument
-            android:name="days"
-            app:argType="string[]" />
-    </fragment>
-    <fragment
         android:id="@+id/additionalInfoScreenFragment"
         android:name="com.example.info_ui.AdditionalInfoScreenFragment"
-        android:label="Additional info"
-        tools:layout="@layout/fragment_additional_info_screen">
+        android:label="Weather Details">
         <argument
             android:name="day"
             app:argType="string" />

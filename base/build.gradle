@@ -9,12 +9,10 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        minSdk 28
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -39,10 +37,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -68,4 +63,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3:1.0.0-alpha13'
     implementation "androidx.compose.runtime:runtime-livedata:$compose"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
 }

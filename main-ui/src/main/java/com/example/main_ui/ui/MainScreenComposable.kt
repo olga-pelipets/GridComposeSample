@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,14 +21,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.main.ui.R
 import com.example.main_ui.MainScreenFragmentDirections
 import com.example.main_ui.MainScreenViewModel
-import com.example.main_ui.R
 import com.example.weather_domain.models.ForecastItem
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -48,16 +45,13 @@ import java.util.Date
 import java.util.TimeZone
 
 @Composable
-fun MainScreen(
-    viewModel: MainScreenViewModel,
-    navController: NavController
+fun MainWeatherScreen(
+    viewModel: MainScreenViewModel
 ) {
     val visibility by viewModel.status.observeAsState()
     val city by viewModel.cityName.observeAsState()
     val date by viewModel.date.observeAsState()
-    val image = viewModel.storageRepository.getPhotoId()
     val forecast by viewModel.forecastData.observeAsState()
-    val photoVisibility by viewModel.photoVisibility.observeAsState()
 
     Column(
         modifier = Modifier
@@ -69,53 +63,21 @@ fun MainScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconButton(
-                onClick = { goToLocationScreen(navController) }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_location),
-                    contentDescription = null
-                )
-            }
             if (visibility != MainScreenViewModel.Status.Loading) {
                 Text(
-                    text = city.toString(),
+                    text = city.orEmpty(),
                     fontSize = 34.sp,
                     textAlign = TextAlign.Center
                 )
             }
-            IconButton(
-                onClick = { openSettingsSheet(navController) }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_settings),
-                    contentDescription = null
-                )
-            }
         }
+
         Text(
-            text = date.toString(),
+            text = date.orEmpty(),
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
         )
-        if (photoVisibility == true) {
-            Card(
-                modifier = Modifier
-                    .padding(top = 4.dp)
-                    .width(250.dp)
-                    .height(250.dp),
-                shape = RoundedCornerShape(8.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-            ) {
-                Image(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = rememberAsyncImagePainter(model = image),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
         if (visibility == MainScreenViewModel.Status.Loading) {
             CircularProgressIndicator()
         } else {
@@ -124,7 +86,6 @@ fun MainScreen(
                 ForecastList(
                     viewModel = viewModel,
                     days = it.list,
-                    navController = navController
                 )
             }
             DetailedWeather(viewModel.ViewState())
@@ -224,7 +185,6 @@ fun SingleForecastDay(
 fun ForecastList(
     viewModel: MainScreenViewModel,
     days: List<ForecastItem>,
-    navController: NavController
 ) {
     val forecast by viewModel.forecastData.observeAsState()
     LazyRow() {
@@ -250,12 +210,10 @@ fun ForecastList(
                             }
                         }
                     }
-                    val arrayList: Array<String> = listOfDays.toTypedArray()
-
-                    navController.navigate(
-                        MainScreenFragmentDirections.navigateToViewPager(
+                    viewModel.sendEvent(
+                        MainScreenViewModel.Event.InfoDetails(
                             date,
-                            arrayList
+                            listOfDays.toList()
                         )
                     )
                 }
@@ -404,18 +362,9 @@ fun AirPollutionItem(
     value: String,
     text: String
 ) {
-    Column() {
+    Column {
         Text(text = value, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         Text(text = text, textAlign = TextAlign.Center, fontSize = 12.sp)
     }
 }
 
-private fun openSettingsSheet(navController: NavController) {
-    if (navController.currentDestination?.id == com.example.base.R.id.main_screen_id)
-        navController.navigate(MainScreenFragmentDirections.navigateToSettings())
-}
-
-private fun goToLocationScreen(navController: NavController) {
-    if (navController.currentDestination?.id == com.example.base.R.id.main_screen_id)
-        navController.navigate(MainScreenFragmentDirections.navigateToCities())
-}

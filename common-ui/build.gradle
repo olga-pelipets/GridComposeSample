@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id("com.google.dagger.hilt.android")
+}
+
+android {
+    namespace 'com.example.common.ui'
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 28
+        targetSdk 32
+    }
+    buildFeatures{
+        viewBinding true
+        dataBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += [
+                '-opt-in=androidx.compose.material3.ExperimentalMaterial3Api'
+        ]
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$androidx_core"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "com.google.android.material:material:$material"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.ext:junit:$junit_test"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    implementation project(path: ':storage-domain')
+    implementation project(path: ':weather-domain')
+    implementation project(path: ':base')
+    implementation project(path: ':components')
+    implementation project(path: ':main-ui')
+
+    //Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+    //Lifecycle
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_reactive"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
+    //Location
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    //Picasso
+    implementation "com.squareup.picasso:picasso:$picasso"
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    //Compose
+    implementation "androidx.compose.ui:ui:$compose"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose"
+    implementation "androidx.compose.material:material-icons-extended:$compose"
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha13'
+    implementation "androidx.compose.runtime:runtime-livedata:$compose"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    //Pager
+    implementation "com.google.accompanist:accompanist-pager:0.22.0-rc"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.22.0-rc"
+
+}
