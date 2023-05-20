@@ -21,5 +21,6 @@ class ButtonsViewModel @Inject constructor(
     sealed class Event {
         object PrimaryButtonClick : Event()
         object SecondaryButtonClick : Event()
+        object TextButtonClick : Event()
     }
 }

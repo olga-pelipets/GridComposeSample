@@ -47,6 +47,9 @@ class ButtonsFragment : BaseFragment() {
             ButtonsViewModel.Event.SecondaryButtonClick -> {
                 Toast.makeText(requireContext(), "SecondaryButtonClick", Toast.LENGTH_SHORT).show()
             }
+            ButtonsViewModel.Event.TextButtonClick -> {
+                Toast.makeText(requireContext(), "TextButtonClick", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
