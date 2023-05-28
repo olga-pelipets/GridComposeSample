@@ -7,7 +7,6 @@ import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,16 +21,19 @@ import com.example.base.fragments.BaseFragment
 import com.example.components.theme.GridTheme
 import com.example.main_ui.ui.MainWeatherScreen
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
 
+
 @AndroidEntryPoint
 class MainScreenFragment : BaseFragment() {
     private val viewModel by viewModels<MainScreenViewModel>()
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +46,30 @@ class MainScreenFragment : BaseFragment() {
             viewModel.events.collect { handleEvent(it) }
         }
 
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireActivity())
+        val locationRequest: LocationRequest = LocationRequest.create()
+        locationRequest.interval = 60000
+        locationRequest.fastestInterval = 5000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        val locationCallback: LocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                if (locationResult == null) {
+                    return
+                }
+                for (location in locationResult.locations) {
+                    if (location != null) {
+                        //TODO: UI updates.
+                    }
+                }
+            }
+        }
+
+        getFusedLocationProviderClient(requireActivity()).requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            null
+        )
+
         checkPermission()
 
         return ComposeView(requireContext()).apply {
@@ -98,9 +122,9 @@ class MainScreenFragment : BaseFragment() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
+        getFusedLocationProviderClient(requireActivity()).lastLocation.addOnSuccessListener {
+            val location = it
             try {
-                 val location: Location = task.result
                 val geocoder = Geocoder(requireActivity(), Locale.getDefault())
                 val addresses: List<Address> = geocoder.getFromLocation(
                     location.latitude, location.longitude, 1
@@ -149,7 +173,7 @@ class MainScreenFragment : BaseFragment() {
     }
 
 
-    private fun navigateToDetailsInfo(day: String, days: List<String>){
+    private fun navigateToDetailsInfo(day: String, days: List<String>) {
         findNavController().navigate(
             MainScreenFragmentDirections.navigateToViewPager(
                 day,
