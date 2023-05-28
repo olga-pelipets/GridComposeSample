@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.material3.Surface
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
@@ -52,13 +51,25 @@ class SummaryFragment : BaseFragment() {
                     SummaryFragmentDirections.navigateToButtonsScreen()
                 )
             }
+            SummaryViewModel.Event.BordersEvent -> {
+                findNavController().navigate(
+                    SummaryFragmentDirections.navigateToBordersScreen()
+                )
+            }
+            SummaryViewModel.Event.CheckboxEvent -> {
+                findNavController().navigate(
+                    SummaryFragmentDirections.navigateToCheckboxScreen()
+                )
+            }
+            SummaryViewModel.Event.RadioButtonEvent -> {
+                findNavController().navigate(
+                    SummaryFragmentDirections.navigateToRadioButtonScreen()
+                )
+            }
             SummaryViewModel.Event.TypographyEvent -> {
                 findNavController().navigate(
                     SummaryFragmentDirections.navigateToTypographyScreen()
                 )
-            }
-            SummaryViewModel.Event.TextEvent -> {
-                Toast.makeText(requireContext(), "Test event", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -2,5 +2,8 @@
 <resources>
     <item name="main_screen_id" type="id"/>
     <item name="buttons_screen_id" type="id"/>
+    <item name="borders_screen_id" type="id"/>
+    <item name="checkbox_screen_id" type="id"/>
+    <item name="radiobutton_screen_id" type="id"/>
     <item name="typography_screen_id" type="id"/>
 </resources>

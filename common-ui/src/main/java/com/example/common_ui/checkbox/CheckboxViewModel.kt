@@ -1,4 +1,4 @@
-package com.example.common_ui.summary
+package com.example.common_ui.checkbox
 
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class SummaryViewModel @Inject constructor(
+class CheckboxViewModel @Inject constructor(
 ) : ViewModel(), LifecycleObserver {
 
     private val uiEvents = UiEvents<Event>()
@@ -19,11 +19,7 @@ class SummaryViewModel @Inject constructor(
     }
 
     sealed class Event {
-        object WeatherAppEvent : Event()
-        object BordersEvent : Event()
-        object ButtonsEvent : Event()
-        object CheckboxEvent : Event()
-        object RadioButtonEvent : Event()
-        object TypographyEvent : Event()
+        object CheckboxChecked : Event()
+        object CheckboxUnchecked : Event()
     }
 }

@@ -19,6 +19,18 @@
             app:destination="@id/buttons_screen_id"/>
 
         <action
+            android:id="@+id/navigateToBordersScreen"
+            app:destination="@id/borders_screen_id"/>
+
+        <action
+            android:id="@+id/navigateToCheckboxScreen"
+            app:destination="@id/checkbox_screen_id"/>
+
+        <action
+            android:id="@+id/navigateToRadioButtonScreen"
+            app:destination="@id/radiobutton_screen_id"/>
+
+        <action
             android:id="@+id/navigateToTypographyScreen"
             app:destination="@id/typography_screen_id"/>
     </fragment>
@@ -27,6 +39,24 @@
         android:id="@id/buttons_screen_id"
         android:name="com.example.common_ui.buttons.ButtonsFragment"
         android:label="Buttons screen">
+    </fragment>
+
+    <fragment
+        android:id="@id/borders_screen_id"
+        android:name="com.example.common_ui.borders.BordersFragment"
+        android:label="Borders screen">
+    </fragment>
+
+    <fragment
+        android:id="@id/checkbox_screen_id"
+        android:name="com.example.common_ui.checkbox.CheckboxFragment"
+        android:label="Checkbox screen">
+    </fragment>
+
+    <fragment
+        android:id="@id/radiobutton_screen_id"
+        android:name="com.example.common_ui.radiobutton.RadioButtonFragment"
+        android:label="RadioButton screen">
     </fragment>
 
     <fragment

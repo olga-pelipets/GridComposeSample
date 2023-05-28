@@ -1,4 +1,4 @@
-package com.example.common_ui.summary
+package com.example.common_ui.radiobutton
 
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
@@ -8,22 +8,17 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class SummaryViewModel @Inject constructor(
+class RadioButtonViewModel @Inject constructor(
 ) : ViewModel(), LifecycleObserver {
 
     private val uiEvents = UiEvents<Event>()
     val events: Flow<Event> = uiEvents.events()
 
-    fun sendEvent(event: Event){
+    fun sendEvent(event: Event) {
         uiEvents.post(event)
     }
 
     sealed class Event {
-        object WeatherAppEvent : Event()
-        object BordersEvent : Event()
-        object ButtonsEvent : Event()
-        object CheckboxEvent : Event()
-        object RadioButtonEvent : Event()
-        object TypographyEvent : Event()
+        data class RadioButtonChecked(val index: Int) : Event()
     }
 }
